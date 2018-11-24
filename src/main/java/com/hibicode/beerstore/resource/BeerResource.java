@@ -26,8 +26,8 @@ public class BeerResource {
      * @return
      */
     @GetMapping
-    public List<String> all() {
-        return Arrays.asList("Heineken", "Colorado Indiga", "Stella Artois");
+    public List<Beer> all() {
+        return beers.findAll();
     }
 
     /**
