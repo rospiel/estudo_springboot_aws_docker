@@ -12,6 +12,7 @@ import java.math.BigDecimal;
 /**
  * Modelo de entidade de beer
  * @author Rodrigo
+ * As mensagens estão sendo buscadas no api_errors.properties
  */
 
 @Entity
@@ -25,13 +26,13 @@ public class Beer {
     @EqualsAndHashCode.Include /* Pedindo pro lombok para gerar com este atributo */
     private Long id;
 
-    @NotBlank
+    @NotBlank(message = "beers-1")
     private String nome;
 
-    @NotNull
+    @NotNull(message = "beers-2")
     private BeerType beerType;
 
-    @NotNull
-    @DecimalMin("0")
+    @NotNull(message = "beers-3")
+    @DecimalMin(value = "0", message = "beers-4")
     private BigDecimal volume;
 }
