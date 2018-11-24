@@ -4,6 +4,9 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
 /**
@@ -22,8 +25,13 @@ public class Beer {
     @EqualsAndHashCode.Include /* Pedindo pro lombok para gerar com este atributo */
     private Long id;
 
-
+    @NotBlank
     private String nome;
+
+    @NotNull
     private BeerType beerType;
+
+    @NotNull
+    @DecimalMin("0")
     private BigDecimal volume;
 }
