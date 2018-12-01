@@ -1,7 +1,9 @@
 package com.hibicode.beerstore.error;
 
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
+import com.hibicode.beerstore.service.exception.BusinessException;
 import lombok.RequiredArgsConstructor;
+import org.apache.tomcat.jni.Local;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.MessageSource;
@@ -60,6 +62,20 @@ public class ApiExceptionHandler {
         final String errorCode = "generic-1";
         final HttpStatus status = HttpStatus.BAD_REQUEST;
         final ErrorResponse errorResponse = ErrorResponse.of(status, toApiError(errorCode, locale, exception.getValue()));
+        return ResponseEntity.badRequest().body(errorResponse);
+    }
+
+    /**
+     * Método que trata as exceções de negócio
+     * @param exception
+     * @param locale
+     * @return
+     */
+    @ExceptionHandler(BusinessException.class)
+    public ResponseEntity<ErrorResponse> handleBusinessException(BusinessException exception, Locale locale) {
+        final String errorCode = exception.getCode();
+        final HttpStatus status = exception.getStatus();
+        final ErrorResponse errorResponse = ErrorResponse.of(status, toApiError(errorCode, locale));
         return ResponseEntity.badRequest().body(errorResponse);
     }
 

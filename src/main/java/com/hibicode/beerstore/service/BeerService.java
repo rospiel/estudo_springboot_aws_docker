@@ -27,7 +27,7 @@ public class BeerService {
      * @return
      */
     public Beer salvar(final Beer beer) {
-        Optional<Beer> beerPorNomeETipo = beers.findByNameAndType(beer.getNome(), beer.getBeerType());
+        Optional<Beer> beerPorNomeETipo = beers.findByNomeAndBeerType(beer.getNome(), beer.getBeerType());
 
         if(beerPorNomeETipo.isPresent()) {
             throw new CervejaJaExisteException();

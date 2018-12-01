@@ -48,7 +48,7 @@ public class BeerServiceTest {
         beerNoBanco.setNome("Heineken");
         beerNoBanco.setBeerType(BeerType.PILSEN);
         beerNoBanco.setVolume(new BigDecimal("500"));
-        when(beersMocked.findByNameAndType("Heineken", BeerType.PILSEN)).thenReturn(Optional.of(beerNoBanco));
+        when(beersMocked.findByNomeAndBeerType("Heineken", BeerType.PILSEN)).thenReturn(Optional.of(beerNoBanco));
         /* Fim construção do objeto mock */
 
         Beer novaBeer = new Beer();

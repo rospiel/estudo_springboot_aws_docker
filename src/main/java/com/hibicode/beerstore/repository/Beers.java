@@ -18,5 +18,5 @@ public interface Beers extends JpaRepository<Beer, Long> {
      * @param beerType
      * @return
      */
-    Optional<Beer> findByNameAndType(String nome, BeerType beerType);
+    Optional<Beer> findByNomeAndBeerType(String nome, BeerType beerType);
 }
