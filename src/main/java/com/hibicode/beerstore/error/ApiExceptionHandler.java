@@ -1,5 +1,6 @@
 package com.hibicode.beerstore.error;
 
+import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,15 +50,30 @@ public class ApiExceptionHandler {
     }
 
     /**
-     * Método de construção da ApiError
-     * @param code
+     * Trata passagem de parâmetros incorretos no envio da requisição
+     * @param exception
      * @param locale
      * @return
      */
-    private ApiError toApiError(String code, Locale locale) {
+    @ExceptionHandler(InvalidFormatException.class)
+    public ResponseEntity<ErrorResponse> handleInvalidFormatException(InvalidFormatException exception, Locale locale) {
+        final String errorCode = "generic-1";
+        final HttpStatus status = HttpStatus.BAD_REQUEST;
+        final ErrorResponse errorResponse = ErrorResponse.of(status, toApiError(errorCode, locale, exception.getValue()));
+        return ResponseEntity.badRequest().body(errorResponse);
+    }
+
+    /**
+     * Método de construção da ApiError
+     * @param code
+     * @param locale
+     * @param valor
+     * @return
+     */
+    private ApiError toApiError(String code, Locale locale, Object... valor) {
         String message;
         try {
-            message = apiErrorMessageSource.getMessage(code, null, locale);
+            message = apiErrorMessageSource.getMessage(code, valor, locale);
         } catch (NoSuchMessageException e) {
             LOG.error("Nenhuma mensagem foi identificada para {} código {} localização", code, locale);
             message = NENHUMA_MENSAGEM_DISPONIVEL;
