@@ -8,6 +8,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.MessageSource;
 import org.springframework.context.NoSuchMessageException;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.ObjectError;
@@ -25,6 +27,7 @@ import java.util.stream.Stream;
  * Classe de interceptação de exceções
  * @author Rodrigo
  */
+@Order(Ordered.HIGHEST_PRECEDENCE)
 @RestControllerAdvice
 @RequiredArgsConstructor
 public class ApiExceptionHandler {
@@ -79,15 +82,6 @@ public class ApiExceptionHandler {
         return ResponseEntity.badRequest().body(errorResponse);
     }
 
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<ErrorResponse> handleException(Exception exception, Locale locale) {
-        LOG.error("Erro inesperado.", exception);
-        final String errorCode = "error-1";
-        final HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
-        final ErrorResponse errorResponse = ErrorResponse.of(status, toApiError(errorCode, locale));
-        return ResponseEntity.status(status).body(errorResponse);
-    }
-
     /**
      * Método de construção da ApiError
      * @param code
@@ -95,7 +89,7 @@ public class ApiExceptionHandler {
      * @param valor
      * @return
      */
-    private ApiError toApiError(String code, Locale locale, Object... valor) {
+    public ApiError toApiError(String code, Locale locale, Object... valor) {
         String message;
         try {
             message = apiErrorMessageSource.getMessage(code, valor, locale);

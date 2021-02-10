@@ -11,6 +11,9 @@ import javax.validation.Valid;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.springframework.http.HttpStatus.CREATED;
+import static org.springframework.http.HttpStatus.NO_CONTENT;
+
 /**
  * Classe dos recursos de beer
  * @author Rodrigo
@@ -41,8 +44,20 @@ public class BeerResource {
      * @return
      */
     @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseStatus(CREATED)
     public Beer criar(@Valid @RequestBody Beer beer) {
         return beerService.salvar(beer);
+    }
+
+    @PutMapping("/{id}")
+    public Beer atualizar(@PathVariable Long id, @Valid @RequestBody Beer beer) {
+        beer.setId(id);
+        return beerService.atualizar(beer);
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(NO_CONTENT)
+    public void deletar(@PathVariable Long id) {
+        beerService.deletar(id);
     }
 }

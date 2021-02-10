@@ -3,10 +3,14 @@ package com.hibicode.beerstore.service;
 import com.hibicode.beerstore.model.Beer;
 import com.hibicode.beerstore.repository.Beers;
 import com.hibicode.beerstore.service.exception.CervejaJaExisteException;
+import com.hibicode.beerstore.service.exception.CervejaNaoExisteException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+import java.util.function.Supplier;
+
+import static java.util.Objects.nonNull;
 
 /**
  * Classe de tratativas de negócio de Beer
@@ -16,6 +20,8 @@ import java.util.Optional;
 public class BeerService {
 
     private Beers beers;
+
+    private Supplier<CervejaNaoExisteException> cervejaNaoExisteException = CervejaNaoExisteException::new;
 
     public BeerService(@Autowired Beers beers) {
         this.beers = beers;
@@ -34,5 +40,22 @@ public class BeerService {
         }
 
         return beers.save(beer);
+    }
+
+    public Beer atualizar(final Beer beerRequest) {
+        Beer beerDataBase = beers.findById(beerRequest.getId()).orElseThrow(cervejaNaoExisteException);
+        return beers.save(construirCervejaAtualizada(beerDataBase, beerRequest));
+    }
+
+    public void deletar(final Long id) {
+        Beer beerDataBase = beers.findById(id).orElseThrow(cervejaNaoExisteException);
+        beers.deleteById(id);
+    }
+
+    private Beer construirCervejaAtualizada(final Beer beerDataBase, final Beer beerRequest) {
+        beerDataBase.setNome(nonNull(beerRequest.getNome()) ? beerRequest.getNome() : beerDataBase.getNome());
+        beerDataBase.setBeerType(nonNull(beerRequest.getBeerType()) ? beerRequest.getBeerType() : beerDataBase.getBeerType());
+        beerDataBase.setVolume(nonNull(beerRequest.getVolume()) ? beerRequest.getVolume() : beerDataBase.getVolume());
+        return beerDataBase;
     }
 }
