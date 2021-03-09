@@ -1,0 +1,108 @@
+{
+	"info": {
+		"_postman_id": "20fdd679-5663-c1e5-b675-510dd5a72949",
+		"name": "Estudo Aws, Spring Boot e Docker",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Inclusão",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"nome\": \"Stella Artois\",\n\t\"beerType\": \"PILSEN\",\n\t\"volume\": \"300\"\n}"
+				},
+				"url": {
+					"raw": "{{url}}/beers",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"beers"
+					]
+				},
+				"description": "Inclusão de recurso "
+			},
+			"response": []
+		},
+		{
+			"name": "Buscar Todos ",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/beers",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"beers"
+					]
+				},
+				"description": "Retorna todos os objetos persistidos no banco"
+			},
+			"response": []
+		},
+		{
+			"name": "Atualizar",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\t\"nome\": \"Test3\",\r\n\t\"beerType\": \"PILSEN\",\r\n\t\"volume\": 25\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/beers/2",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"beers",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Deletar",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/beers/3",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"beers",
+						"3"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
